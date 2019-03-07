@@ -44,6 +44,7 @@ kotlin {
                 implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
                 implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlin_serialization_version"
                 implementation "io.ktor:ktor-client-core-jvm:$ktor_version"
+                implementation "io.ktor:ktor-client-android:$ktor_version"
                 implementation "io.ktor:ktor-client-json-jvm:$ktor_version"
             }
         }

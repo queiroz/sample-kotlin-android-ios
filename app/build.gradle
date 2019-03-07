@@ -25,6 +25,9 @@ android {
         exclude 'META-INF/common.kotlin_module'
         exclude 'META-INF/*.kotlin_module'
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -37,4 +40,5 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
 }
