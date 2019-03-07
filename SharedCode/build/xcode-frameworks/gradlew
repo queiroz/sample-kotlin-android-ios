@@ -1,0 +1,4 @@
+#!/bin/bash
+export 'JAVA_HOME=/Users/rodrigo/.sdkman/candidates/java/8.0.201-oracle/jre'
+cd '/Users/rodrigo/Code/samples/sample-android'
+./gradlew $@
