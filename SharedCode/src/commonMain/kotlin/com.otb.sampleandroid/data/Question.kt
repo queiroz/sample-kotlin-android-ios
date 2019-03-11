@@ -1,10 +1,11 @@
 package com.otb.sampleandroid.data
 
+import kotlinx.serialization.Optional
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Question(
         val id: Int,
         val name: String,
-        val answer: Int = 0
+        @Optional val answer: Int = 0
 )

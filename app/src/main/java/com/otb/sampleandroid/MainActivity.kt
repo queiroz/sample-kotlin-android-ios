@@ -2,27 +2,36 @@ package com.otb.sampleandroid
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.otb.sampleandroid.adapters.QuestionAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var questionAdapter: QuestionAdapter
+    private lateinit var questionViewModel: QuestionViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setupAdapter()
-//        questionAdapter.submitList(questions)
+        questionViewModel = ViewModelProviders.of(this).get(QuestionViewModel::class.java)
+        setupAdapterWithViewPager()
+        initialize()
     }
 
-    private fun setupAdapter() {
+    private fun setupAdapterWithViewPager() {
         questionAdapter = QuestionAdapter()
         list_questions.apply {
-            layoutManager = LinearLayoutManager(context)
             adapter = questionAdapter
         }
+    }
+
+    private fun initialize() {
+        questionViewModel.questions.observe(this, Observer {
+            questionAdapter.submitList(it)
+        })
+        questionViewModel.fetchQuestions()
     }
 
 }
