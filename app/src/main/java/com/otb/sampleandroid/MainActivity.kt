@@ -21,7 +21,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupAdapterWithViewPager() {
-        questionAdapter = QuestionAdapter()
+        questionAdapter = QuestionAdapter(onQuestion = {
+            questionViewModel.addAnswer(it)
+        }, onPage = {
+            list_questions.currentItem = it
+        }, onFinish = {
+            questionViewModel.sendQuestionWithAnswer()
+            println("sent")
+        })
+
         list_questions.apply {
             adapter = questionAdapter
         }
