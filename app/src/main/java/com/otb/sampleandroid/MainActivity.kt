@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         questionViewModel = ViewModelProviders.of(this).get(QuestionViewModel::class.java)
         setupAdapterWithViewPager()
         initialize()
+
     }
 
     private fun setupAdapterWithViewPager() {
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initialize() {
         questionViewModel.questions.observe(this, Observer {
+            println(it)
             questionAdapter.submitList(it)
         })
         questionViewModel.fetchQuestions()
