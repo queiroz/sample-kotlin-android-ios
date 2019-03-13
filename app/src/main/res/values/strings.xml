@@ -3,4 +3,6 @@
     <string name="back">Back</string>
     <string name="next">Next</string>
     <string name="submit">Submit</string>
+    <string name="prev">Prev</string>
+    <string name="thanks_for_completing_the_feedback">Thanks for completing the feedback</string>
 </resources>

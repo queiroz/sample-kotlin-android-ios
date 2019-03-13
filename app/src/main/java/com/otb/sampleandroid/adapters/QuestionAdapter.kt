@@ -18,9 +18,7 @@ import androidx.core.view.children
 import com.otb.sampleandroid.R
 
 class QuestionAdapter(
-        private val onQuestion: (QuestionAnswer) -> Unit,
-        private val onPage: (Int) -> Unit,
-        private val onFinish: () -> Unit
+        private val onQuestion: (QuestionAnswer) -> Unit
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val differ = AsyncListDiffer<Question>(this, DIFF_ITEM_CALLBACK)
@@ -37,7 +35,10 @@ class QuestionAdapter(
     override fun getItemCount(): Int = differ.currentList.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is QuestionViewHolder) holder.bind(differ.currentList[position])
+        if (holder is QuestionViewHolder) {
+            holder.setIsRecyclable(false)
+            holder.bind(differ.currentList[position])
+        }
     }
 
     internal inner class QuestionViewHolder(private val binding: ViewDataBinding): RecyclerView.ViewHolder(binding.root) {
@@ -71,22 +72,6 @@ class QuestionAdapter(
                         }
                     }
                 }
-            }
-            val page = adapterPosition + 1
-            if (page == differ.currentList.size) {
-                next.text = context.getText(com.otb.sampleandroid.R.string.submit)
-            } else {
-                next.text = context.getText(com.otb.sampleandroid.R.string.next)
-            }
-            next.setOnClickListener {
-                if (page < differ.currentList.size) {
-                    onPage(adapterPosition + 1)
-                } else {
-                    onFinish()
-                }
-            }
-            back.setOnClickListener {
-                if (page >= 0) onPage(adapterPosition - 1)
             }
         }
 

@@ -5,12 +5,15 @@ import com.otb.sampleandroid.data.Question
 import com.otb.sampleandroid.data.QuestionAnswer
 
 class SharedQuestionViewModel {
-    private val api = QuestionApi(host(), port())
-    var questions: List<Question> = emptyList()
-    private val questionsWithAnswer = HashMap<Int, QuestionAnswer>()
+
+    private var questions: List<Question> = emptyList()
+    private val api = QuestionApi()
+    private val _answers = HashMap<Int, QuestionAnswer>()
+    val answers: Map<Int, QuestionAnswer>
+        get() = _answers
 
     fun addAnswer(questionAnswer: QuestionAnswer) {
-        questionsWithAnswer[questionAnswer.questionId] = questionAnswer
+        _answers[questionAnswer.questionId] = questionAnswer
     }
 
     fun fetchQuestions(success: (List<Question>) -> Unit, failure: (Throwable?) -> Unit?) = api.getQuestions(
@@ -24,7 +27,7 @@ class SharedQuestionViewModel {
     )
 
     fun sendQuestionWithAnswer() {
-        val listOfAnswers = questionsWithAnswer.values.toList()
+        val listOfAnswers = answers.values.toList()
         api.updateQuestions(listOfAnswers, success = {
             println("success")
         }, failure = {
