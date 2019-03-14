@@ -53,7 +53,7 @@ class QuestionApi {
         GlobalScope.launch(ApplicationDispatcher) {
             try {
                 val answers = QuestionAnswerData(questions)
-                val builder = buildRequest("questions_answers", HttpMethod.Post, answers)
+                val builder = buildRequest("answers", HttpMethod.Post, answers)
                 httpClient.request<HttpResponse>(builder)
                 success(questions)
             } catch (e: Exception) {
