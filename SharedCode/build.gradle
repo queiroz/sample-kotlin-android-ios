@@ -38,6 +38,13 @@ kotlin {
             }
         }
 
+        commonTest {
+            dependencies {
+                implementation "org.jetbrains.kotlin:kotlin-test-common"
+                implementation "org.jetbrains.kotlin:kotlin-test-annotations-common"
+            }
+        }
+
         androidMain {
             dependencies {
                 implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -46,6 +53,13 @@ kotlin {
                 implementation "io.ktor:ktor-client-core-jvm:$ktor_version"
                 implementation "io.ktor:ktor-client-android:$ktor_version"
                 implementation "io.ktor:ktor-client-json-jvm:$ktor_version"
+            }
+        }
+
+        androidTest {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-test'
+                implementation 'org.jetbrains.kotlin:kotlin-test-junit'
             }
         }
 
@@ -58,6 +72,14 @@ kotlin {
                 implementation "io.ktor:ktor-client-json-native:$ktor_version"
             }
         }
+
+        iosTest {
+            dependencies {
+                implementation 'org.jetbrains.kotlin:kotlin-test'
+                implementation 'org.jetbrains.kotlin:kotlin-test-junit'
+            }
+        }
+
     }
 }
 
