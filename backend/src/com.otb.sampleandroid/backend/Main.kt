@@ -3,16 +3,13 @@ package com.otb.sampleandroid.backend
 import io.ktor.application.Application
 import io.ktor.application.call
 import io.ktor.application.install
-import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
 import io.ktor.features.StatusPages
-import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.util.error
 import io.ktor.websocket.WebSockets
-import org.omg.CosNaming.NamingContextPackage.NotFound
 
 internal fun Application.main() {
 
@@ -38,9 +35,6 @@ internal fun Application.main() {
             environment.log.error(cause)
             call.respond(HttpStatusCode.InternalServerError)
         }
-    }
-    install(ContentNegotiation) {
-        register(ContentType.Application.Json, KotlinxConverter())
     }
     install(Routing) {
         api()

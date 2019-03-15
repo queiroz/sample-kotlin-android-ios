@@ -10,14 +10,10 @@ import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.host
-import io.ktor.client.request.port
-import io.ktor.client.request.request
-import io.ktor.client.response.HttpResponse
+import io.ktor.client.request.post
+import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.HttpMethod
-import io.ktor.http.URLBuilder
 import io.ktor.http.contentType
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -41,6 +37,7 @@ class QuestionApi {
             try {
                 val url = "http://${host()}:3000/questions"
                 val json = httpClient.get<String>(url)
+                httpClient.close()
                 Json.nonstrict.parse(Question.serializer().list, json)
                         .also(success)
             } catch (e: Exception) {
@@ -52,9 +49,14 @@ class QuestionApi {
     fun updateQuestions(questions: List<QuestionAnswer>, success: (List<QuestionAnswer>) -> Unit, failure: (Throwable?) -> Unit) {
         GlobalScope.launch(ApplicationDispatcher) {
             try {
-                val answers = QuestionAnswerData(questions)
-                val builder = buildRequest("answers", HttpMethod.Post, answers)
-                httpClient.request<HttpResponse>(builder)
+                val jsonRaw: String = Json.stringify(QuestionAnswer.serializer().list, questions)
+                httpClient.post<String> {
+                    url("http://${host()}:3000/answers")
+                    body = jsonRaw
+                }
+//                val builder = buildRequest("answers", HttpMethod.Post, jsonRaw)
+//                httpClient.request<String>(builder)
+                httpClient.close()
                 success(questions)
             } catch (e: Exception) {
                 failure(e)
@@ -62,14 +64,16 @@ class QuestionApi {
         }
     }
 
-    private fun buildRequest(endpoint: String, method: HttpMethod = HttpMethod.Get, body: Any? = null): HttpRequestBuilder {
+    private fun buildRequest(endpoint: String, method: HttpMethod = HttpMethod.Get, body: String? = null): HttpRequestBuilder {
         val httpRequestBuilder = HttpRequestBuilder()
         httpRequestBuilder.contentType(ContentType.Application.Json)
-        httpRequestBuilder.header("Content-Type", "application/json")
         httpRequestBuilder.method = method
-        httpRequestBuilder.host = host()
-        httpRequestBuilder.port = 3000
-        httpRequestBuilder.url { URLBuilder(endpoint) }
+        httpRequestBuilder.url(
+            scheme = "http",
+            host = host(),
+            port = 3000,
+            path = endpoint
+        )
         body?.let {
             httpRequestBuilder.body = it
         }
